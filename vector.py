@@ -1,5 +1,7 @@
 from utils import RelativeDirection
 
+vector_element_max = 100
+vector_element_min = -100
 
 class Vector:
     def __init__(self, x, y):
@@ -14,6 +16,9 @@ class Vector:
 
     def __eq__(self, other):
         return (self.x == other.x) and (self.y == other.y)
+
+    def __hash__(self):
+        return self.x + self.y * (vector_element_max - vector_element_min + 1)
 
     def __repr__(self):
         return 'Vector(x,y)'.replace('x', str(self.x)).replace('y', str(self.y))

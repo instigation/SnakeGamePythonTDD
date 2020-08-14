@@ -49,3 +49,42 @@ def test_snake_velocity_should_change(relative_direction):
     game.change_snake_velocity(relative_direction)
     new_snake_velocity = game.get_snake_velocity()
     assert original_snake_velocity.turn(relative_direction) == new_snake_velocity
+
+def test_game_random_generates_foods():
+
+    def rand_pos_generator(n):
+        return Vector(n+1,n+1)
+
+    game = Game(food_num=1, rand_pos_generator=rand_pos_generator)
+    food_positions = game.get_food_positions()
+    assert len(food_positions) == 1
+    assert food_positions[0] == Vector(1,1)
+
+def test_snake_gets_longer_by_eating_foods():
+
+    def rand_pos_generator(n):
+        y = 2 if n%2 == 0 else -2
+        return Vector(y,0)
+
+    game = Game(food_num=1, rand_pos_generator=rand_pos_generator)
+    assert game.get_snake_velocity() == Vector(1,0)
+    game.tick()
+    game.tick()
+    snake_positions = game.get_snake_positions()
+    assert len(snake_positions) == 2
+
+def test_snake_turn_gradually_turns_its_body():
+
+    def rand_pos_generator(n):
+        return Vector(n+1,0)
+
+    game = Game(food_num=2, rand_pos_generator=rand_pos_generator)
+    assert game.get_snake_velocity() == Vector(1,0)
+    game.tick()
+    game.tick()
+    assert set(game.get_snake_positions()) == {Vector(0,0), Vector(1,0), Vector(2,0)}
+    game.change_snake_velocity(RelativeDirection.RIGHT)
+    game.tick()
+    assert set(game.get_snake_positions()) == {Vector(1,0), Vector(2,0), Vector(2,-1)}
+    game.tick()
+    assert set(game.get_snake_positions()) == {Vector(2,0), Vector(2,-1), Vector(2,-2)}
