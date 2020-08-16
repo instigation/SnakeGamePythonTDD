@@ -18,6 +18,9 @@ class Snake:
     def turn(self, relative_direction):
         self.velocity = self.velocity.turn(relative_direction)
 
+    def can_eat_food(self, food_positions):
+        return self.get_head() in food_positions
+
     def get_positions(self):
         return self.positions
 

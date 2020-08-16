@@ -14,11 +14,8 @@ class Game:
 
     def tick(self):
         self.snake.advance_position()
-        if self.can_eat_food():
+        if self.snake.can_eat_food(self.get_food_positions()):
             self.eat_food_at(self.snake.get_head())
-
-    def can_eat_food(self):
-        return self.snake.get_head() in self.get_food_positions()
 
     def eat_food_at(self, position):
         self.snake.grow()
