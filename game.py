@@ -1,12 +1,9 @@
-from vector import Vector
-from utils import RelativeDirection
+from snake import Snake
 
 
 class Game:
     def __init__(self, *, food_num=1, rand_pos_generator=None):
-        self.positions = [Vector(0, 0)] # head is always at index 0
-        self.length = 1
-        self.velocity = Vector(1, 0)
+        self.snake = Snake()
         self.rand_pos_generator = rand_pos_generator
         self.next_food_id_to_issue = 0
         if rand_pos_generator is not None:
@@ -15,27 +12,18 @@ class Game:
         else:
             self.food_positions = []
 
-    def get_snake_head(self):
-        return self.positions[0]
-
     def tick(self):
-        self.advance_snake()
+        self.snake.advance_position()
         if self.can_eat_food():
-            self.eat_food_at(self.get_snake_head())
-
-    def advance_snake(self):
-        self.positions = [self.get_snake_head() + self.velocity] + self.positions[0:-1]
+            self.eat_food_at(self.snake.get_head())
 
     def can_eat_food(self):
-        return self.get_snake_head() in self.get_food_positions()
+        return self.snake.get_head() in self.get_food_positions()
 
     def eat_food_at(self, position):
-        self.grow_snake()
+        self.snake.grow()
         self.remove_food_at(position)
         self.spawn_new_food()
-
-    def grow_snake(self):
-        self.positions.append(self.positions[-1] - Vector(1,0))
 
     def remove_food_at(self, position):
         self.food_positions.remove(position)
@@ -45,13 +33,13 @@ class Game:
         self.next_food_id_to_issue += 1
 
     def get_snake_positions(self):
-        return self.positions
+        return self.snake.get_positions()
 
     def get_snake_velocity(self):
-        return self.velocity
+        return self.snake.get_velocity()
 
     def change_snake_velocity(self, relative_direction):
-        self.velocity = self.velocity.turn(relative_direction)
+        self.snake.turn(relative_direction)
 
     def get_food_positions(self):
         return self.food_positions
