@@ -88,3 +88,30 @@ def test_snake_turn_gradually_turns_its_body():
     assert set(game.get_snake_positions()) == {Vector(1,0), Vector(2,0), Vector(2,-1)}
     game.tick()
     assert set(game.get_snake_positions()) == {Vector(2,0), Vector(2,-1), Vector(2,-2)}
+
+def test_food_num_should_consistent_throughout_the_game():
+
+    def rand_pos_generator(n):
+        return Vector(1,n)
+
+    game = Game(food_num=2, rand_pos_generator=rand_pos_generator)
+    assert game.get_snake_velocity() == Vector(1,0)
+    assert len(game.get_food_positions()) == 2
+    game.tick()
+    assert len(game.get_food_positions()) == 2
+
+def test_food_should_disappear_when_eaten():
+
+    def rand_pos_generator(n):
+        return Vector(1,n)
+
+    game = Game(food_num=1, rand_pos_generator=rand_pos_generator)
+    assert game.get_snake_velocity() == Vector(1,0)
+    original_food_positions = game.get_food_positions()
+    assert len(original_food_positions) == 1
+    expected_original_food_position = Vector(1,0)
+    assert original_food_positions[0] == expected_original_food_position
+    game.tick()
+    new_food_positions = game.get_food_positions()
+    assert len(new_food_positions) == 1
+    assert new_food_positions[0] != expected_original_food_position
