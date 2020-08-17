@@ -1,8 +1,8 @@
 from snake import Snake
-
+from geometry import OpenSquare
 
 class Game:
-    def __init__(self, *, food_num=1, rand_pos_generator=None):
+    def __init__(self, *, food_num=0, rand_pos_generator=None, map_width=None, map_height=None):
         self.snake = Snake()
         self.rand_pos_generator = rand_pos_generator
         self.next_food_id_to_issue = 0
@@ -11,11 +11,14 @@ class Game:
             self.next_food_id_to_issue = food_num
         else:
             self.food_positions = []
+        self.map_width = map_width
+        self.map_height = map_height
 
-    def tick(self):
-        self.snake.advance_position()
-        if self.snake.can_eat_food(self.get_food_positions()):
-            self.eat_food_at(self.snake.get_head())
+    def tick(self, n=1):
+        for i in range(n):
+            self.snake.advance_position()
+            if self.snake.can_eat_food(self.get_food_positions()):
+                self.eat_food_at(self.snake.get_head())
 
     def eat_food_at(self, position):
         self.snake.grow()
@@ -40,3 +43,7 @@ class Game:
 
     def get_food_positions(self):
         return self.food_positions
+
+    def is_over(self):
+        map_area = OpenSquare(self.map_width, self.map_height)
+        return (not map_area.includes(self.snake.get_head())) or self.snake.is_stepping_itself()

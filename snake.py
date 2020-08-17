@@ -21,6 +21,9 @@ class Snake:
     def can_eat_food(self, food_positions):
         return self.get_head() in food_positions
 
+    def is_stepping_itself(self):
+        return len(self.positions) != len(set(self.positions))
+
     def get_positions(self):
         return self.positions
 
