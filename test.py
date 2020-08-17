@@ -138,3 +138,19 @@ def test_game_over_when_snake_steps_over_itself():
         game.tick()
     assert game.is_over()
 
+def test_snake_should_grow_along_its_tail_direction():
+
+    def rand_pos_generator(n):
+        return Vector(n+1, 0)
+
+    game = Game(food_num=10, rand_pos_generator=rand_pos_generator)
+    game.tick(3)
+    assert len(game.get_snake_positions()) == 4
+    game.change_snake_velocity(RelativeDirection.LEFT)
+    game.tick(5)
+    game.change_snake_velocity(RelativeDirection.RIGHT)
+    game.tick()
+    game.change_snake_velocity(RelativeDirection.RIGHT)
+    game.tick(5)
+    for snake_position in game.get_snake_positions():
+        assert snake_position.x == 4

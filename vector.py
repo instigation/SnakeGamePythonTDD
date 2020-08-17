@@ -23,6 +23,12 @@ class Vector:
     def __repr__(self):
         return 'Vector(x,y)'.replace('x', str(self.x)).replace('y', str(self.y))
 
+    def scalar_multiply(self, scalar):
+        return Vector(self.x*scalar, self.y*scalar)
+
+    def to_list(self):
+        return [self.x, self.y]
+
     def l1_norm(self):
         return abs(self.x) + abs(self.y)
 
