@@ -9,4 +9,4 @@ class OpenSquare:
     def includes(self, vector):
         if (self.width is None) or (self.height is None):
             return True
-        return (abs(vector.x)*2 < self.width) and (abs(vector.y) < self.height)
+        return (abs(vector.x)*2 < self.width) and (abs(vector.y)*2 < self.height)

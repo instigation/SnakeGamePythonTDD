@@ -116,8 +116,17 @@ def test_food_should_disappear_when_eaten():
     assert len(new_food_positions) == 1
     assert new_food_positions[0] != expected_original_food_position
 
-def test_game_over_when_hit_any_wall():
+def test_game_over_when_hit_vertical_wall():
     game = Game(food_num=0, rand_pos_generator=None, map_width=4, map_height=4)
+    assert not game.is_over()
+    game.tick()
+    assert not game.is_over()
+    game.tick(2)
+    assert game.is_over()
+
+def test_game_over_when_hit_horizontal_wal():
+    game = Game(food_num=0, rand_pos_generator=None, map_width=4, map_height=4)
+    game.change_snake_velocity(RelativeDirection.LEFT)
     assert not game.is_over()
     game.tick()
     assert not game.is_over()
